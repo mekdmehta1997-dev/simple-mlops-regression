@@ -20,7 +20,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: |
+      run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
@@ -44,7 +44,6 @@ jobs:
   build_and_push:
     needs: train_and_test
     runs-on: ubuntu-latest
-    # Only build & push image when train_and_test succeeded AND we're on main branch
     if: ${{ needs.train_and_test.result == 'success' && github.ref == 'refs/heads/main' }}
 
     env:
@@ -77,8 +76,8 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: level3
+          password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Push Docker image
         run: |
